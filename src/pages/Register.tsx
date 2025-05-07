@@ -7,35 +7,40 @@ import {
   TextField,
   Button,
   Link,
+  Alert,
 } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
+import { API_URL } from '../config';
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Пароли не совпадают');
-      return;
-    }
+    setError('');
+    
     try {
-      // Здесь будет запрос к API для регистрации
-      const response = await fetch('http://localhost:3000/api/auth/register', {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, phone }),
       });
+
+      if (!response.ok) {
+        throw new Error('Ошибка регистрации');
+      }
+
       const data = await response.json();
-      login(data.token);
+      login(data.access_token, data.user);
       navigate('/');
     } catch (error) {
+      setError('Ошибка регистрации. Попробуйте еще раз.');
       console.error('Ошибка регистрации:', error);
     }
   };
@@ -53,42 +58,35 @@ const Register = () => {
         <Typography component="h1" variant="h5">
           Регистрация
         </Typography>
+        {error && (
+          <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
+            {error}
+          </Alert>
+        )}
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
+            id="name"
+            label="Имя"
+            name="name"
+            autoComplete="name"
             autoFocus
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Пароль"
-            type="password"
-            id="password"
-            autoComplete="new-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="confirmPassword"
-            label="Подтвердите пароль"
-            type="password"
-            id="confirmPassword"
-            autoComplete="new-password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            name="phone"
+            label="Телефон"
+            type="tel"
+            id="phone"
+            autoComplete="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
           />
           <Button
             type="submit"

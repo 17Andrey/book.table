@@ -4,16 +4,15 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
 interface User {
-  sub: string;
-  email: string;
-  iat: number;
-  exp: number;
+  id: number;
+  name: string;
+  phone: string;
 }
 
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  login: (token: string) => void;
+  login: (token: string, userData: User) => void;
   logout: () => void;
 }
 
@@ -37,28 +36,30 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
+    const userData = localStorage.getItem('user');
+    if (token && userData) {
       try {
-        const decoded = jwtDecode<User>(token);
-        setUser(decoded);
+        setUser(JSON.parse(userData));
         setIsAuthenticated(true);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       } catch (error) {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
       }
     }
   }, []);
 
-  const login = (token: string) => {
+  const login = (token: string, userData: User) => {
     localStorage.setItem('token', token);
-    const decoded = jwtDecode<User>(token);
-    setUser(decoded);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
     setIsAuthenticated(true);
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
     delete axios.defaults.headers.common['Authorization'];
