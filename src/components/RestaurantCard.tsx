@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { HatIcon } from '../assets/hatIcon';
-import { MapIcon } from '../assets/mapIcon';
+import { GlobeIcon } from '@radix-ui/react-icons';
 
 interface Restaurant {
   id: number;
@@ -17,8 +17,6 @@ interface RestaurantCardProps {
   restaurant: Restaurant;
   onClick: () => void;
 }
-
-const iconStyle = 'max-w-[18px] h-auto align-middle mr-1.5 inline-block';
 
 const RestaurantCard = ({ restaurant, onClick }: RestaurantCardProps) => {
   const [isActive, setIsActive] = useState(false);
@@ -56,12 +54,12 @@ const RestaurantCard = ({ restaurant, onClick }: RestaurantCardProps) => {
           </span>
         </div>
         <span className="text-[15px] text-neutral-500 mb-0.5">{restaurant.seats} посадочных мест</span>
-        <div className="flex items-center mb-0.5">
-          <MapIcon className={iconStyle} />
+        <div className="flex items-center gap-2 mb-0.5">
+          <GlobeIcon className="w-4 h-4" />
           <span className="text-[15px] text-neutral-500">{restaurant.address}</span>
         </div>
-        <div className="flex items-center">
-          <HatIcon className={iconStyle} />
+        <div className="flex items-center gap-2">
+          <HatIcon className="w-4 h-4" />
           <span className="text-[15px] text-neutral-500">{(restaurant.cuisines || []).join(', ')}</span>
         </div>
       </div>

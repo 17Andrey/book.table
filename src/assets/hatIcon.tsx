@@ -1,5 +1,8 @@
-import React from 'react';
-export const HatIcon = ({ className = '' }: { className?: string }) => (
+interface HatIconProps {
+  className?: string;
+}
+
+export const HatIcon = ({ className = '' }: HatIconProps) => (
     <svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" 
 	 viewBox="0 0 463 463"
      className={className}

@@ -1,11 +1,1 @@
-import React from 'react';
-export const MapIcon = ({ className}: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-    <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
-    <g id="SVGRepo_iconCarrier">
-      <path d="M4 10.1433C4 5.64588 7.58172 2 12 2C16.4183 2 20 5.64588 20 10.1433C20 14.6055 17.4467 19.8124 13.4629 21.6744C12.5343 22.1085 11.4657 22.1085 10.5371 21.6744C6.55332 19.8124 4 14.6055 4 10.1433Z" stroke="#000000" strokeWidth="1.5"></path>
-      <circle cx="12" cy="10" r="3" stroke="#000000" strokeWidth="1.5"></circle>
-    </g>
-  </svg>
-);
+ 
